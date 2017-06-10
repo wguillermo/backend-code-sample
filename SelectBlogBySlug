@@ -1,0 +1,33 @@
+ALTER PROC [dbo].[Blogs_SelectBlogBySlug]
+	@Slug nvarchar(200)
+
+AS
+
+/*
+--TEST CODE--
+
+	DECLARE @Slug nvarchar(200) = 'open-source-cohesive-leverage'
+
+	EXEC dbo.Blogs_SelectBlogBySlug
+		@Slug
+
+		select *
+		from dbo.blogs
+*/
+
+BEGIN
+SELECT [Id]
+      ,[Title]
+      ,[Subject]
+      ,[Author]
+      ,[PublishDate]
+      ,[Content]
+      ,[IsPublished]
+      ,[DateCreated]
+      ,[DateModified]
+	  ,[Slug]
+	  ,[ImageUrl]
+  FROM [dbo].[Blogs]
+
+  WHERE @Slug = Slug
+END
