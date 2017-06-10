@@ -1,0 +1,24 @@
+ALTER PROCEDURE [dbo].[Item_SelectById]
+@Id Int
+AS
+
+--TEST CODE--
+/*
+	DECLARE @Id Int = 2
+
+	EXECUTE dbo.Item_SelectById
+	@Id
+*/
+BEGIN
+	SELECT Id
+			, BoxId
+			, ProductId
+			, Price
+			, SubscriptionId
+			, CreatedBy
+			, CreatedDate
+			, ModifiedBy
+			, ModifiedDate
+	FROM dbo.Item
+	WHERE Id = @Id
+END
