@@ -1,0 +1,73 @@
+ALTER PROC [dbo].[Blogs_Insert]
+		@Title nvarchar(128)
+		, @Subject nvarchar(128)
+		, @PublishDate datetime2(7) 
+		, @Content nvarchar(MAX)
+		, @isPublished bit 
+		, @DateCreated datetime = null
+		, @DateModified datetime = null
+		, @Slug nvarchar(200)		
+		, @Id int OUTPUT
+
+AS
+/*
+--TEST CODE--
+	DECLARE @Id int = 0
+			, @Title nvarchar(128) = 'Sed ut perspiciatis unde omnis iste natus error.'
+			, @Subject nvarchar (128) = 'Excepteur sint occaecat cupidatat non proident.'
+			, @PublishDate datetime = '2016-12-17'
+			, @Content nvarchar(MAX) = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+			, @isPublished bit = 0
+		  , @DateCreated datetime = null
+		  , @DateModified datetime = null
+			, @Slug nvarchar(200) = '78ffsd787'
+
+			
+	EXECUTE dbo.Blogs_Insert
+			@Title
+			, @Subject
+			, @PublishDate
+			, @Content
+			, @isPublished 
+			, @DateCreated
+			, @DateModified
+			, @Slug 
+			, @Id output 
+			
+	SELECT * FROM dbo.Blogs
+	WHERE Id = @Id
+
+*/
+
+BEGIN
+
+If (@DateCreated IS null)
+	
+	BEGIN
+
+		SET @DateCreated = GETUTCDATE () --null set to current UTC
+	END
+		SET @DateModified = COALESCE(@DateModified, getutcdate()) --takes this value if @created isn't null
+
+INSERT INTO [dbo].[Blogs]
+           ([Title]
+           ,[Subject]
+           ,[PublishDate]
+           ,[Content]
+		       ,[isPublished]
+		       ,[DateCreated]
+		       ,[DateModified]
+		       ,[Slug])
+     VALUES
+           (@Title
+           , @Subject
+           , @PublishDate
+           , @Content
+		       , @isPublished
+		       , @DateCreated
+		       , @DateModified
+		       , @Slug)
+
+	SET @Id = SCOPE_IDENTITY()
+	--SELECT @Id = SCOPE_IDENTITY()
+END
